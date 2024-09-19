@@ -1,0 +1,96 @@
+"""
+
+
+
+python
+Copiar código
+from pywinauto.application import Application
+from pywinauto.timings import TimeoutError
+Importações: Importa a classe Application da biblioteca pywinauto, que é usada para automação de interfaces gráficas,
+ e a exceção TimeoutError, que será utilizada para tratar erros de tempo de espera.
+python
+Copiar código
+app = Application(backend="uia").start("notepad.exe")
+Inicia o Bloco de Notas: Cria uma instância da classe Application, especificando que o backend a ser usado é o
+ "uia" (UI Automation). Em seguida, inicia o aplicativo "notepad.exe".
+python
+Copiar código
+dlg = app.window(title_re=".*Bloco de Notas")
+Seleciona a janela do Bloco de Notas: Usa uma expressão regular para localizar a janela do Bloco de Notas.
+ O title_re permite buscar a janela por partes do título.
+python
+Copiar código
+dlg.Edit.type_keys("Este é um teste com pywinauto!", with_spaces=True)
+Digita texto: Acessa o controle de edição (campo de texto) da janela selecionada e usa o método type_keys 
+para digitar a string "Este é um teste com pywinauto!", permitindo a inclusão de espaços.
+python
+Copiar código
+dlg.menu_select("Arquivo -> Sair")
+Seleciona o menu Sair: Navega pelo menu da aplicação, especificamente para "Arquivo", e seleciona a opção 
+"Sair", que geralmente pede confirmação para fechar o aplicativo.
+python
+Copiar código
+confirmation_dialog = app.window(title_re=".*Bloco de Notas")
+Aguarda a janela de confirmação: Após a seleção de "Sair", a janela de confirmação do Bloco de Notas aparece, 
+e a linha procura essa janela novamente, usando o mesmo método de título.
+python
+Copiar código
+try:
+    nao_salvar_button = confirmation_dialog.child_window(
+        title="Não Salvar",
+        control_type="Button",
+        auto_id="CommandButton_7"
+    )
+Tenta localizar o botão "Não Salvar": Dentro da janela de confirmação, procura um botão com o título "Não Salvar", 
+especificando o tipo de controle (botão) e um ID automático.
+python
+Copiar código
+    nao_salvar_button.wait('enabled', timeout=10)
+Aguarda o botão: Espera até que o botão "Não Salvar" esteja habilitado, com um tempo limite de 10 segundos.
+python
+Copiar código
+    nao_salvar_button.click()
+Clica no botão: Se o botão foi encontrado e está habilitado, simula um clique nele.
+python
+Copiar código
+except TimeoutError:
+    print("O botão 'Não Salvar' não foi encontrado ou não ficou disponível a tempo.")
+Tratamento de exceção: Se o botão "Não Salvar" não for encontrado ou não ficar disponível dentro do tempo limite,
+ captura a exceção TimeoutError e imprime uma mensagem de erro.
+Esse código é um exemplo de como automatizar a interação com uma interface gráfica de usuário, utilizando a biblioteca 
+pywinauto para manipular o Bloco de Notas do Windows. Se tiver mais perguntas ou precisar de mais detalhes, é só avisar!
+
+
+
+
+
+
+Você disse:
+app = Application(backend="uia").start("notepad.exe")
+
+
+não entendi essa linha , pode me explicar melhor ? 
+O ChatGPT disse:
+ChatGPT
+Claro! Vamos detalhar essa linha:
+
+python
+Copiar código
+app = Application(backend="uia").start("notepad.exe")
+Application(backend="uia"):
+
+Aqui, você está criando uma nova instância da classe Application da biblioteca pywinauto.
+O parâmetro backend="uia" indica que você está utilizando o backend "UI Automation" (UIA) da Microsoft. 
+O UIA é um modelo de acessibilidade e automação que permite interagir com interfaces gráficas do Windows, 
+tornando-o ideal para trabalhar com aplicações modernas.
+.start("notepad.exe"):
+
+O método start() é chamado na instância da Application criada. Esse método inicia o aplicativo especificado, 
+que neste caso é "notepad.exe", ou seja, o Bloco de Notas.
+Quando start() é chamado, o programa "notepad.exe" é executado e, assim que o aplicativo é iniciado, a instância 
+app se torna uma referência ao aplicativo em execução.
+Resumindo, essa linha de código inicia o Bloco de Notas e cria uma referência ao aplicativo, que pode ser utilizada 
+posteriormente para interagir com a janela e seus controles. Se precisar de mais esclarecimentos, fique à vontade para perguntar!
+
+
+"""
